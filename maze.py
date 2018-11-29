@@ -35,21 +35,21 @@ while (levels_completed < total_levels):
 	rows = r.json()['maze_size'][1]
 
 	#obtaining current position
-	xCoord = r.json()['current_location'][0]
-	yCoord = r.json()['current_location'][1]
+	yCoord = r.json()['current_location'][0]
+	xCoord = r.json()['current_location'][1]
 
 	# Initializing visited matrix to mark as visited
-	visited = [[False for j in range(cols)] for i in range(rows)]
+	visited = [[False for j in range(rows)] for i in range(cols)]
 		
 	# Solves the maze and returns whether or not a path to the end has been found
 	def solve(x, y):
-		visited[y][x] = True
+		visited[x][y] = True
 
 		# If moving out of bounds, to a visited point, or into a wall, do not recurse down that path
 		# Stop and continue to next level when a level is solved
 
 		# UP
-		if ((y - 1 >= 0) and not (visited[y - 1][x])):
+		if ((y - 1 >= 0) and not (visited[x][y-1])):
 			moving = move(up, url2, headers)
 			if (moving == 'END'):
 				return True
@@ -61,10 +61,10 @@ while (levels_completed < total_levels):
 				# Backtracking
 				move(down, url2, headers)
 			elif (moving == 'WALL'):
-				visited[y - 1][x] = True
+				visited[x][y-1] = True
 
 		# DOWN
-		if ((y + 1 < rows) and not (visited[y + 1][x])):
+		if ((y + 1 < rows) and not (visited[x][y+1])):
 			moving = move(down, url2, headers)
 			if (moving == 'END'):
 				return True
@@ -76,10 +76,10 @@ while (levels_completed < total_levels):
 				# Backtracking
 				move(up, url2, headers)
 			elif (moving == 'WALL'):
-				visited[y + 1][x] = True
+				visited[x][y+1] = True
 
 		# LEFT
-		if ((x - 1 >= 0) and not (visited[y][x - 1])):
+		if ((x - 1 >= 0) and not (visited[x-1][y])):
 			moving = move(left, url2, headers)
 			if (moving == 'END'):
 				return True
@@ -91,10 +91,10 @@ while (levels_completed < total_levels):
 				# Backtracking
 				move(right, url2, headers)
 			elif (moving == 'WALL'):
-				visited[y][x - 1] = True
+				visited[x-1][y] = True
 
 		# RIGHT
-		if ((x + 1 < cols) and not (visited[y][x + 1])):
+		if ((x + 1 < cols) and not (visited[x+1][y])):
 			moving = move(right, url2, headers)
 			if (moving == 'END'):
 				return True
@@ -106,7 +106,7 @@ while (levels_completed < total_levels):
 				# Backtracking
 				move(left, url2, headers)
 			elif (moving == 'WALL'):
-				visited[y][x + 1] = True
+				visited[x+1][y] = True
 
 		return False
 
