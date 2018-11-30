@@ -116,5 +116,6 @@ while (levels_completed < total_levels):
 	levels_completed += 1
 	print("Completed level ", levels_completed)
 
+r = requests.get(url2)
 print (r.json())
 print ("Completed all mazes!")
